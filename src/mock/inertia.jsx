@@ -12,17 +12,25 @@ export function Head({ title }) {
     return null;
 }
 
+export function navigate(href = '/') {
+    if (typeof window === 'undefined') return;
+    const nextUrl = String(href || '/');
+    window.history.pushState({}, '', nextUrl);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+}
+
 export function Link({ href = '#', children, onClick, ...props }) {
-    return <a href={href} onClick={(event) => { event.preventDefault(); onClick?.(event); }} {...props}>{children}</a>;
+    return <a href={href} onClick={(event) => { event.preventDefault(); onClick?.(event); navigate(href); }} {...props}>{children}</a>;
 }
 
 export const router = {
-    visit: () => {},
-    get: () => {},
-    post: () => {},
-    put: () => {},
-    patch: () => {},
-    delete: () => {},
+    visit: (href) => navigate(href),
+    get: (href) => navigate(href),
+    post: (href) => navigate(href),
+    put: (href) => navigate(href),
+    patch: (href) => navigate(href),
+    delete: (href) => navigate(href),
+    reload: () => window?.dispatchEvent(new PopStateEvent('popstate')),
 };
 
 export function useForm(initialData = {}) {
