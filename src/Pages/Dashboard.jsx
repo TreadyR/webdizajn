@@ -507,7 +507,7 @@ export default function Dashboard({ auth, dashboardData }) {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-sm font-medium text-muted-foreground">Čaká na kontrolu</p>
-                                            <div className="text-2xl font-bold">{dashboardData.pendingAssignments}</div>
+                                            <div className="text-2xl font-bold">{dashboardData.pendingAssignmentsCount ?? dashboardData.pendingAssignments?.length ?? 0}</div>
                                         </div>
                                         <ClipboardDocumentCheckIcon className="h-8 w-8 text-yellow-500/60" />
                                     </div>

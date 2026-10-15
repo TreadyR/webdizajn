@@ -48,7 +48,23 @@ export { PageContext };
 
 if (typeof globalThis.route !== 'function') {
     globalThis.route = (name, params) => {
-        const id = typeof params === 'object' ? Object.values(params)[0] : params;
+        if (!name) {
+            return {
+                current: (pattern) => {
+                    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+                    const currentName = currentPath === '/' ? 'dashboard' : currentPath.slice(1).replaceAll('/', '.');
+                    return pattern.endsWith('.*')
+                        ? currentName.startsWith(pattern.slice(0, -2))
+                        : currentName === pattern;
+                },
+            };
+        }
+
+        const id = Array.isArray(params)
+            ? params[params.length - 1]
+            : typeof params === 'object' && params !== null
+                ? Object.values(params)[0]
+                : params;
         const paths = {
             dashboard: '/',
             'theses.index': '/theses',
@@ -60,6 +76,6 @@ if (typeof globalThis.route !== 'function') {
             'admin.system': '/admin/system',
             'admin.reports': '/admin/reports',
         };
-        return paths[name] || `/${name.replaceAll('.', '/')}${id ? `/${id}` : ''}`;
+        return paths[name] || `/${String(name).replaceAll('.', '/')}${id ? `/${id}` : ''}`;
     };
 }
