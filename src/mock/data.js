@@ -14,8 +14,30 @@ export const mockProps = {
             { id: 2, title: 'Vyhodnotenie dotazníka', description: 'Spracujte výsledky prieskumu.', due_date: '2026-10-24', status: 'submitted' },
         ],
         upcomingMeetings: [
-            { id: 1, title: 'Konzultácia s Máriou Novákovou', scheduled_at: '2026-10-16T13:30:00' },
-            { id: 2, title: 'Kontrola návrhu práce', scheduled_at: '2026-10-21T10:00:00' },
+            {
+                id: 1,
+                title: 'Konzultácia s Máriou Novákovou',
+                scheduled_at: '2026-10-16T13:30:00',
+                location: 'Online',
+                thesis: {
+                    id: 1,
+                    title: 'Digitálna transformácia malých podnikov',
+                    student: { name: 'Mária Nováková' },
+                    supervisor: { name: 'Ján Kráľ' },
+                },
+            },
+            {
+                id: 2,
+                title: 'Kontrola návrhu práce',
+                scheduled_at: '2026-10-21T10:00:00',
+                location: 'Kabinet 2.14',
+                thesis: {
+                    id: 2,
+                    title: 'Bezpečnostné riziká cloudových služieb',
+                    student: { name: 'Tomáš Kováč' },
+                    supervisor: { name: 'Ján Kráľ' },
+                },
+            },
         ],
         totalStudents: 12, unreadMessages: 2,
         activeTheses: [

@@ -19,32 +19,47 @@ export function navigate(href = '/') {
     window.dispatchEvent(new PopStateEvent('popstate'));
 }
 
-export function Link({ href = '#', children, onClick, ...props }) {
-    return <a href={href} onClick={(event) => { event.preventDefault(); onClick?.(event); navigate(href); }} {...props}>{children}</a>;
-}
+export const Link = React.forwardRef(function Link({ href = '#', children, onClick, ...props }, ref) {
+    return <a ref={ref} href={href} onClick={(event) => { event.preventDefault(); onClick?.(event); navigate(href); }} {...props}>{children}</a>;
+});
 
 export const router = {
     visit: (href) => navigate(href),
     get: (href) => navigate(href),
-    post: (href) => navigate(href),
-    put: (href) => navigate(href),
-    patch: (href) => navigate(href),
-    delete: (href) => navigate(href),
+    post: (_href, _data, options = {}) => options.onSuccess?.(),
+    put: (_href, _data, options = {}) => options.onSuccess?.(),
+    patch: (_href, _data, options = {}) => options.onSuccess?.(),
+    delete: (_href, _data, options = {}) => options.onSuccess?.(),
     reload: () => window?.dispatchEvent(new PopStateEvent('popstate')),
 };
 
 export function useForm(initialData = {}) {
     const [data, setDataState] = useState(initialData);
+    const [processing, setProcessing] = useState(false);
+    const run = (method, href, options = {}) => {
+        setProcessing(true);
+        options.onSuccess?.();
+        setProcessing(false);
+        if (method === 'post' && /\/(appointments|theses|assignments)\/store$/.test(String(href))) {
+            navigate(`/${String(href).split('/')[1]}`);
+            return;
+        }
+        window?.dispatchEvent(new PopStateEvent('popstate'));
+    };
     return {
         data,
         setData: (key, value) => setDataState((current) => typeof key === 'object' ? key : { ...current, [key]: value }),
         errors: {},
-        processing: false,
+        processing,
         reset: () => setDataState(initialData),
         clearErrors: () => {},
         transform: () => {},
-        submit: () => {},
-        get: () => {}, post: () => {}, put: () => {}, patch: () => {}, delete: () => {},
+        submit: (method, href, options) => run(method, href, options),
+        get: (href, options) => run('get', href, options),
+        post: (href, options = {}) => run('post', href, options),
+        put: (href, options = {}) => run('put', href, options),
+        patch: (href, options = {}) => run('patch', href, options),
+        delete: (href, options = {}) => run('delete', href, options),
     };
 }
 
@@ -76,10 +91,18 @@ if (typeof globalThis.route !== 'function') {
         const paths = {
             dashboard: '/',
             'theses.index': '/theses',
+            'theses.create': '/theses/create',
+            'theses.show': `/theses/${id}`,
+            'theses.edit': `/theses/${id}/edit`,
             'progress.index': '/progress',
             'assignments.index': '/assignments',
+            'assignments.create': '/assignments/create',
+            'assignments.show': `/assignments/${id}`,
+            'assignments.edit': `/assignments/${id}/edit`,
             'messages.index': '/messages',
             'appointments.index': '/appointments',
+            'appointments.create': '/appointments/create',
+            'appointments.show': `/appointments/${id}`,
             'admin.users': '/admin/users',
             'admin.system': '/admin/system',
             'admin.reports': '/admin/reports',
