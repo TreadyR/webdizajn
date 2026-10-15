@@ -1,0 +1,755 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem
+  ;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 142.1 76.2% 36.3%;
+    --sidebar-primary-foreground: 355.7 100% 97.3%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%}
+  .dark {
+    --background: 220 10% 8%;
+    --foreground: 210 40% 98%;
+    --card: 220 9% 10.5%;
+    --card-foreground: 210 40% 98%;
+    --popover: 220 9% 10.5%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 220 8% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 220 8% 15%;
+    --muted-foreground: 220 10% 68%;
+    --accent: 220 8% 15%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 8% 20%;
+    --input: 220 8% 20%;
+    --ring: 142 55% 70%;
+    --chart-1: 0 72.2% 50.6%;
+    --chart-2: 190 78% 52%;
+    --chart-3: 142.1 76.2% 36.3%;
+    --chart-4: 47.9 95.8% 53.1%;
+    --chart-5: 280 100% 70%
+  ;
+    --sidebar-background: 220 11% 7%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 142.1 70.6% 45.3%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 220 9% 13%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 9% 15%;
+    --sidebar-ring: 142 55% 70%}
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: hsl(var(--muted-foreground));
+    opacity: 1;
+  }
+
+  input,
+  textarea,
+  select {
+    color: hsl(var(--foreground));
+  }
+  
+  html {
+    @apply dark h-full;
+  }
+  
+  #app {
+    @apply h-full;
+  }
+
+  /* Custom Scrollbar */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: rgb(24 24 27); /* zinc-900 */
+    border-radius: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgb(63 63 70); /* zinc-700 */
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgb(82 82 91); /* zinc-600 */
+  }
+
+  /* Firefox scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(63 63 70) rgb(24 24 27); /* thumb track */
+  }
+
+  /* Global scrollbar styling for dark theme */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(24 24 27); /* zinc-900 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(63 63 70); /* zinc-700 */
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(82 82 91); /* zinc-600 */
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: rgb(24 24 27);
+  }
+
+  /* Firefox global scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(63 63 70) rgb(24 24 27);
+  }
+}
+
+@layer components {
+  .student-dashboard-shell {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .student-dashboard-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(30rem 30rem at 24% 28%, hsl(196 90% 68% / 0.16), transparent 64%),
+      radial-gradient(28rem 28rem at 78% 70%, hsl(152 83% 62% / 0.14), transparent 66%);
+    animation: dashboard-breathe 10s ease-in-out infinite;
+  }
+
+  .student-dashboard-ambient {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    display: none;
+  }
+
+  .student-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(60px);
+    opacity: 0.35;
+    will-change: transform;
+    animation: student-orb-float 16s ease-in-out infinite;
+  }
+
+  .student-orb-1 {
+    width: 26rem;
+    height: 26rem;
+    top: -8rem;
+    left: -6rem;
+    background: radial-gradient(circle at 30% 30%, hsl(160 70% 45%), hsl(168 63% 22%) 70%);
+  }
+
+  .student-orb-2 {
+    width: 22rem;
+    height: 22rem;
+    top: 18rem;
+    right: -5rem;
+    background: radial-gradient(circle at 35% 35%, hsl(199 85% 55%), hsl(221 70% 30%) 72%);
+    animation-duration: 19s;
+    animation-delay: -4s;
+  }
+
+  .student-orb-3 {
+    width: 20rem;
+    height: 20rem;
+    bottom: -6rem;
+    left: 35%;
+    background: radial-gradient(circle at 40% 40%, hsl(38 92% 58%), hsl(27 78% 35%) 72%);
+    animation-duration: 21s;
+    animation-delay: -8s;
+  }
+
+  .student-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.18;
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.16) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.16) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.85), transparent 78%);
+  }
+
+  .student-card {
+    position: relative;
+    overflow: hidden;
+    background: hsl(var(--card) / 0.72);
+    backdrop-filter: blur(10px);
+    border-color: hsl(var(--border) / 0.72);
+    box-shadow: 0 1px 0 hsl(0 0% 100% / 0.06) inset, 0 10px 28px hsl(222 56% 5% / 0.26);
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  }
+
+  .student-card:hover {
+    transform: translateY(-2px);
+    border-color: hsl(var(--primary) / 0.55);
+    box-shadow: 0 1px 0 hsl(0 0% 100% / 0.08) inset, 0 14px 34px hsl(222 56% 5% / 0.34);
+  }
+
+  .student-welcome-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid hsl(var(--border) / 0.8);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    overflow: hidden;
+    background:
+      linear-gradient(125deg, hsl(207 70% 20% / 0.78), hsl(167 63% 20% / 0.72) 44%, hsl(30 70% 22% / 0.64)),
+      radial-gradient(16rem 10rem at 76% 30%, hsl(0 0% 100% / 0.2), transparent 68%);
+    box-shadow: 0 18px 44px hsl(222 58% 6% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.12);
+  }
+
+  .student-welcome-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(28rem 14rem at 52% 36%, hsl(0 0% 100% / 0.16), transparent 72%);
+    pointer-events: none;
+  }
+
+  .student-welcome-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .student-welcome-title {
+    color: hsl(0 0% 100%);
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .student-welcome-subtitle {
+    margin-top: 0.65rem;
+    color: hsl(210 35% 92% / 0.95);
+    font-size: clamp(0.95rem, 1.35vw, 1.08rem);
+    max-width: 40rem;
+  }
+
+  .student-welcome-button {
+    position: relative;
+    z-index: 1;
+    background: hsl(0 0% 100% / 0.95);
+    color: hsl(210 38% 16%);
+    border: 1px solid hsl(0 0% 100% / 0.85);
+    box-shadow: 0 10px 24px hsl(210 48% 8% / 0.24);
+  }
+
+  .student-welcome-button:hover {
+    background: hsl(0 0% 100%);
+    color: hsl(210 38% 14%);
+  }
+
+  @media (max-width: 640px) {
+    .student-dashboard-shell::before,
+    .supervisor-dashboard-shell::before,
+    .admin-dashboard-shell::before {
+      animation: none;
+      opacity: 0.55;
+    }
+
+    .student-dashboard-ambient,
+    .supervisor-dashboard-ambient {
+      display: none;
+    }
+
+    .student-welcome-hero,
+    .supervisor-welcome-hero {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+      gap: 0.75rem;
+    }
+
+    .student-welcome-title,
+    .supervisor-welcome-title {
+      font-size: 1.7rem;
+      line-height: 1.15;
+    }
+
+    .student-welcome-subtitle,
+    .supervisor-welcome-subtitle {
+      font-size: 0.92rem;
+    }
+  }
+
+  .supervisor-dashboard-shell {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .supervisor-dashboard-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(30rem 30rem at 22% 30%, hsl(212 89% 68% / 0.15), transparent 64%),
+      radial-gradient(28rem 28rem at 80% 72%, hsl(168 74% 50% / 0.13), transparent 66%);
+    animation: dashboard-breathe 11s ease-in-out infinite;
+  }
+
+  .supervisor-dashboard-ambient {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    display: none;
+  }
+
+  .supervisor-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    opacity: 0.3;
+    animation: student-orb-float 17s ease-in-out infinite;
+  }
+
+  .supervisor-orb-1 {
+    width: 24rem;
+    height: 24rem;
+    top: -7rem;
+    left: -5rem;
+    background: radial-gradient(circle at 30% 30%, hsl(214 95% 66%), hsl(222 82% 30%) 72%);
+  }
+
+  .supervisor-orb-2 {
+    width: 22rem;
+    height: 22rem;
+    top: 16rem;
+    right: -4rem;
+    background: radial-gradient(circle at 35% 35%, hsl(169 84% 52%), hsl(183 72% 23%) 74%);
+    animation-duration: 20s;
+    animation-delay: -5s;
+  }
+
+  .supervisor-orb-3 {
+    width: 20rem;
+    height: 20rem;
+    bottom: -5rem;
+    left: 28%;
+    background: radial-gradient(circle at 40% 40%, hsl(202 92% 60%), hsl(211 78% 26%) 72%);
+    animation-duration: 22s;
+    animation-delay: -9s;
+  }
+
+  .supervisor-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.14;
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.14) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.14) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.86), transparent 82%);
+  }
+
+  .supervisor-welcome-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid hsl(var(--border) / 0.78);
+    border-radius: 1rem;
+    padding: 1.35rem;
+    overflow: hidden;
+    background:
+      linear-gradient(128deg, hsl(221 63% 20% / 0.8), hsl(202 72% 22% / 0.72) 45%, hsl(181 58% 19% / 0.66)),
+      radial-gradient(18rem 12rem at 75% 32%, hsl(0 0% 100% / 0.14), transparent 70%);
+    box-shadow: 0 16px 40px hsl(222 62% 6% / 0.32), inset 0 1px 0 hsl(0 0% 100% / 0.08);
+  }
+
+  .supervisor-welcome-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(26rem 14rem at 54% 34%, hsl(0 0% 100% / 0.12), transparent 74%);
+    pointer-events: none;
+  }
+
+  .supervisor-welcome-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .supervisor-welcome-title {
+    color: hsl(0 0% 100%);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    line-height: 1.1;
+    font-weight: 750;
+    letter-spacing: -0.015em;
+  }
+
+  .supervisor-welcome-subtitle {
+    margin-top: 0.55rem;
+    color: hsl(210 32% 90% / 0.95);
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    max-width: 38rem;
+  }
+
+  .supervisor-welcome-button {
+    position: relative;
+    z-index: 1;
+    background: hsl(212 95% 70% / 0.94);
+    color: hsl(216 39% 14%);
+    border: 1px solid hsl(212 95% 80% / 0.8);
+    box-shadow: 0 10px 24px hsl(212 62% 8% / 0.22);
+  }
+
+  .supervisor-welcome-button:hover {
+    background: hsl(212 95% 76%);
+    color: hsl(216 39% 13%);
+  }
+
+  .supervisor-card {
+    position: relative;
+    overflow: hidden;
+    background: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(9px);
+    border-color: hsl(var(--border) / 0.72);
+    box-shadow: 0 1px 0 hsl(0 0% 100% / 0.06) inset, 0 10px 28px hsl(222 56% 5% / 0.24);
+    transition: transform 210ms ease, border-color 210ms ease, box-shadow 210ms ease;
+  }
+
+  .supervisor-card:hover {
+    transform: translateY(-2px);
+    border-color: hsl(211 80% 62% / 0.56);
+    box-shadow: 0 1px 0 hsl(0 0% 100% / 0.08) inset, 0 14px 34px hsl(222 56% 5% / 0.3);
+  }
+
+  .supervisor-stat-card {
+    background: linear-gradient(145deg, hsl(var(--card) / 0.74), hsl(214 35% 15% / 0.4));
+  }
+
+  .page-enter-fade {
+    animation: page-enter-fade 380ms ease-out both;
+  }
+
+  .section-lift-in {
+    animation: section-lift-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .stagger-item {
+    opacity: 0;
+    animation: section-lift-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .card-hover-glow {
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  }
+
+  .card-hover-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px hsl(222 58% 6% / 0.28);
+  }
+
+  .ambient-page-shell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    --mx: 50%;
+    --my: 22%;
+  }
+
+  .ambient-page-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(24rem 20rem at 12% 14%, hsl(198 88% 60% / 0.12), transparent 72%),
+      radial-gradient(26rem 22rem at 88% 16%, hsl(153 70% 52% / 0.1), transparent 72%),
+      radial-gradient(20rem 18rem at 48% 100%, hsl(41 92% 60% / 0.1), transparent 74%);
+    animation: ambient-drift 15s ease-in-out infinite;
+  }
+
+  .ambient-page-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.16;
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.16) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.16) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.88), transparent 82%);
+  }
+
+  .ambient-page-spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      18rem 18rem at var(--mx) var(--my),
+      hsl(210 80% 88% / 0.1),
+      transparent 72%
+    );
+    transition: background-position 80ms linear;
+  }
+
+  .ambient-page-content {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@keyframes student-orb-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) scale(1.04);
+  }
+}
+
+@keyframes dashboard-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.95;
+    filter: saturate(100%);
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.75;
+    filter: saturate(114%);
+  }
+}
+
+@keyframes page-enter-fade {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes section-lift-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes ambient-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: saturate(100%);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) scale(1.02);
+    filter: saturate(114%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-fade,
+  .section-lift-in,
+  .stagger-item,
+  .student-orb,
+  .supervisor-orb,
+  .student-dashboard-shell::before,
+  .supervisor-dashboard-shell::before,
+  .card-hover-glow,
+  .ambient-page-shell::before,
+  .card-hover-glow:hover {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .stagger-item {
+    opacity: 1 !important;
+  }
+
+  .ambient-page-spotlight {
+    background: none !important;
+  }
+}
+
+/*
+  Stability fallback for devices/browsers where ambient effects can jitter,
+  over-animate, or visually "fly" during rendering.
+*/
+@media (hover: none), (pointer: coarse), (max-width: 1024px) {
+  .page-enter-fade,
+  .section-lift-in,
+  .stagger-item,
+  .student-orb,
+  .supervisor-orb,
+  .student-dashboard-shell::before,
+  .supervisor-dashboard-shell::before,
+  .ambient-page-shell::before,
+  .card-hover-glow,
+  .card-hover-glow:hover,
+  .student-card,
+  .student-card:hover,
+  .supervisor-card,
+  .supervisor-card:hover {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .stagger-item {
+    opacity: 1 !important;
+  }
+
+  .student-dashboard-ambient,
+  .supervisor-dashboard-ambient,
+  .ambient-page-grid,
+  .ambient-page-spotlight {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .student-orb {
+    filter: blur(42px);
+    opacity: 0.28;
+  }
+
+  .student-orb-1,
+  .student-orb-2,
+  .student-orb-3 {
+    width: 15rem;
+    height: 15rem;
+  }
+
+  .student-grid {
+    background-size: 30px 30px;
+    opacity: 0.12;
+  }
+
+  .student-dashboard-shell::before {
+    background:
+      radial-gradient(16rem 16rem at 24% 28%, hsl(196 90% 68% / 0.13), transparent 70%),
+      radial-gradient(14rem 14rem at 78% 70%, hsl(152 83% 62% / 0.11), transparent 72%);
+  }
+
+  .supervisor-dashboard-shell::before {
+    background:
+      radial-gradient(16rem 16rem at 22% 30%, hsl(212 89% 68% / 0.12), transparent 70%),
+      radial-gradient(14rem 14rem at 80% 72%, hsl(168 74% 50% / 0.1), transparent 72%);
+  }
+
+  .student-welcome-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.15rem;
+  }
+
+  .student-welcome-title {
+    font-size: 1.75rem;
+  }
+
+  .supervisor-orb {
+    filter: blur(44px);
+    opacity: 0.24;
+  }
+
+  .supervisor-orb-1,
+  .supervisor-orb-2,
+  .supervisor-orb-3 {
+    width: 15rem;
+    height: 15rem;
+  }
+
+  .supervisor-grid {
+    background-size: 30px 30px;
+    opacity: 0.1;
+  }
+
+  .supervisor-welcome-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.1rem;
+  }
+
+  .supervisor-welcome-title {
+    font-size: 1.55rem;
+  }
+}
