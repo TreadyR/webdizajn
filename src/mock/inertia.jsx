@@ -192,11 +192,14 @@ export const router = {
 export function useForm(initialData = {}) {
     const [data, setDataState] = useState(initialData);
     const [processing, setProcessing] = useState(false);
+    const [recentlySuccessful, setRecentlySuccessful] = useState(false);
     const run = (method, href, options = {}) => {
         setProcessing(true);
+        setRecentlySuccessful(false);
         applyMockRequest(method, href, options.data || data);
         options.onSuccess?.();
         setProcessing(false);
+        setRecentlySuccessful(true);
         const parsed = resourceFromUrl(href);
         const adminMatch = String(href || '').match(/^\/admin\/users(?:\/(\d+))?\/([^/?]+)/);
         if (adminMatch) {
@@ -228,6 +231,7 @@ export function useForm(initialData = {}) {
         setData: (key, value) => setDataState((current) => typeof key === 'object' ? key : { ...current, [key]: value }),
         errors: {},
         processing,
+        recentlySuccessful,
         reset: () => setDataState(initialData),
         clearErrors: () => {},
         transform: () => {},
