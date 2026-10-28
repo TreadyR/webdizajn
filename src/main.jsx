@@ -17,6 +17,7 @@ import AssignmentCreate from './Pages/Assignments/Create';
 import ThesisShow from './Pages/Theses/Show';
 import ThesisEdit from './Pages/Theses/Edit';
 import ThesisCreate from './Pages/Theses/Create';
+import ProfileEdit from './Pages/Profile/Edit';
 import { PageContext } from './mock/inertia';
 import { mockProps } from './mock/data';
 import './app.css';
@@ -38,6 +39,7 @@ function pageForPath(pathname) {
     if (pathname.startsWith('/progress')) return ProgressIndex;
     if (pathname.startsWith('/messages')) return MessageIndex;
     if (pathname.startsWith('/appointments')) return AppointmentIndex;
+    if (pathname === '/profile') return ProfileEdit;
     return Dashboard;
 }
 
@@ -137,7 +139,20 @@ function propsForPage(Page, pathname) {
     }
     if (Page === ThesisIndex) return { auth, theses: paginate(dashboardData.activeTheses), canCreate: true, canAssignStudents: true, filters: {} };
     if (Page === AssignmentIndex) return { auth, assignments: paginate(dashboardData.pendingAssignments), theses: dashboardData.activeTheses, canCreate: true, filters: {} };
-    if (Page === ProgressIndex) return { auth, thesis: null, milestones: [], supervisedTheses: dashboardData.activeTheses, filters: {} };
+    if (Page === ProgressIndex) {
+        const progressThesis = pathname.match(/^\/progress\/(\d+)/);
+        const selectedThesis = progressThesis
+            ? dashboardData.activeTheses.find((item) => item.id === Number(progressThesis[1]))
+            : null;
+        return {
+            auth,
+            thesis: selectedThesis,
+            milestones: selectedThesis?.milestones || [],
+            supervisedTheses: dashboardData.activeTheses,
+            filters: {},
+        };
+    }
+    if (Page === ProfileEdit) return { auth, mustVerifyEmail: false, status: null };
     if (Page === MessageIndex) return { auth, conversations: [] };
     if (Page === AppointmentIndex) return { auth, appointments: dashboardData.upcomingMeetings.map((meeting) => ({ ...meeting, status: 'confirmed', scheduled_at: meeting.scheduled_at })) };
     return { auth, dashboardData };

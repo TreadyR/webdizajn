@@ -91,6 +91,8 @@ function applyMockRequest(method, href, payload = {}) {
         if (parsed.resource === 'appointments') {
             item.status = 'pending';
             item.duration = Number(item.duration) || 60;
+            item.thesis = mockProps.dashboardData.activeTheses.find((thesis) => Number(thesis.id) === Number(item.thesis_id))
+                || mockProps.dashboardData.activeTheses[0];
         }
         items.push(item);
         return item;
@@ -302,6 +304,9 @@ if (typeof globalThis.route !== 'function') {
                 'appointments.respond-reschedule': `/appointments/${id}/respond-reschedule`,
                 'appointments.cancel-reschedule-proposal': `/appointments/${id}/cancel-reschedule-proposal`,
             'appointments.show': `/appointments/${id}`,
+                'progress.thesis': `/progress/${id}`,
+                'profile.edit': '/profile',
+                'profile.update': '/profile/update',
                 'admin.users': '/admin/users',
                 'admin.users.create': '/admin/users/create',
                 'admin.users.store': '/admin/users/store',

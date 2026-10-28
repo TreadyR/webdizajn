@@ -46,9 +46,21 @@ export const mockProps = {
         ],
         totalStudents: 12, unreadMessages: 2,
         activeTheses: [
-            { id: 1, title: 'Digitálna transformácia malých podnikov', student: { name: 'Mária Nováková' }, progress: 68, status: 'in_progress' },
-            { id: 2, title: 'Bezpečnostné riziká cloudových služieb', student: { name: 'Tomáš Kováč' }, progress: 22, status: 'assigned' },
-            { id: 3, title: 'Použiteľnosť moderných e-shopov', student: { name: 'Lucia Horváthová' }, progress: 100, status: 'completed' },
+            { id: 1, title: 'Digitálna transformácia malých podnikov', student: { name: 'Mária Nováková' }, progress: 68, status: 'in_progress', milestones: [
+                { id: 1, title: 'Návrh práce', status: 'completed', progress: 100, due_date: '2026-09-15' },
+                { id: 2, title: 'Metodika výskumu', status: 'in_progress', progress: 65, due_date: '2026-10-18' },
+                { id: 3, title: 'Vyhodnotenie výsledkov', status: 'pending', progress: 0, due_date: '2026-11-15' },
+                { id: 4, title: 'Záverečná verzia', status: 'pending', progress: 0, due_date: '2026-12-15' },
+            ] },
+            { id: 2, title: 'Bezpečnostné riziká cloudových služieb', student: { name: 'Tomáš Kováč' }, progress: 22, status: 'assigned', milestones: [
+                { id: 5, title: 'Štúdium zdrojov', status: 'completed', progress: 100, due_date: '2026-09-30' },
+                { id: 6, title: 'Analýza rizík', status: 'in_progress', progress: 32, due_date: '2026-11-01' },
+                { id: 7, title: 'Návrh opatrení', status: 'pending', progress: 0, due_date: '2026-12-01' },
+            ] },
+            { id: 3, title: 'Použiteľnosť moderných e-shopov', student: { name: 'Lucia Horváthová' }, progress: 100, status: 'completed', milestones: [
+                { id: 8, title: 'Výskum', status: 'completed', progress: 100, due_date: '2026-06-15' },
+                { id: 9, title: 'Testovanie', status: 'completed', progress: 100, due_date: '2026-08-15' },
+            ] },
         ],
         recentTheses: [], recentUsers: [], systemStats: {},
     },
