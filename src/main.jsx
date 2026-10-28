@@ -8,6 +8,9 @@ import MessageIndex from './Pages/Messages/Index';
 import AppointmentIndex from './Pages/Appointments/Index';
 import AppointmentShow from './Pages/Appointments/Show';
 import AppointmentCreate from './Pages/Appointments/Create';
+import AdminUsers from './Pages/Admin/Users';
+import AdminCreateUser from './Pages/Admin/CreateUser';
+import AdminEditUser from './Pages/Admin/EditUser';
 import AssignmentShow from './Pages/Assignments/Show';
 import AssignmentEdit from './Pages/Assignments/Edit';
 import AssignmentCreate from './Pages/Assignments/Create';
@@ -27,6 +30,9 @@ function pageForPath(pathname) {
     if (/^\/assignments\/\d+$/.test(pathname)) return AssignmentShow;
     if (pathname === '/appointments/create') return AppointmentCreate;
     if (/^\/appointments\/\d+$/.test(pathname)) return AppointmentShow;
+    if (pathname === '/admin/users/create') return AdminCreateUser;
+    if (/^\/admin\/users\/\d+\/edit$/.test(pathname)) return AdminEditUser;
+    if (pathname.startsWith('/admin/users')) return AdminUsers;
     if (pathname.startsWith('/theses')) return ThesisIndex;
     if (pathname.startsWith('/assignments')) return AssignmentIndex;
     if (pathname.startsWith('/progress')) return ProgressIndex;
@@ -48,7 +54,7 @@ function paginate(items) {
 }
 
 function itemId(pathname) {
-    const match = pathname.match(/\/(?:theses|assignments|appointments)\/(\d+)/);
+    const match = pathname.match(/\/(?:theses|assignments|appointments|admin\/users)\/(\d+)/);
     return match ? Number(match[1]) : null;
 }
 
@@ -84,12 +90,23 @@ function propsForPage(Page, pathname) {
         thesis,
     );
     const appointment = dashboardData.upcomingMeetings.find((item) => item.id === id) || dashboardData.upcomingMeetings[0];
-    if (Page === ThesisShow) return { auth, thesis, canEdit: true, canAssignStudent: true, canRemoveStudent: true, availableStudents: [] };
+    if (Page === ThesisShow) return {
+        auth,
+        thesis,
+        canEdit: true,
+        canAssignStudent: true,
+        canRemoveStudent: Boolean(thesis.student),
+        availableStudents: (mockProps.adminUsers || []).filter((user) => user.role === 'student').map((user) => ({ id: user.id, name: user.name, email: user.email })),
+    };
     if (Page === ThesisEdit) return { auth, thesis };
     if (Page === ThesisCreate) return { auth };
     if (Page === AssignmentShow) return { auth, assignment, canEdit: true, canSubmit: true };
     if (Page === AssignmentEdit) return { auth, assignment };
-    if (Page === AssignmentCreate) return { auth, theses: dashboardData.activeTheses };
+    if (Page === AssignmentCreate) {
+        const query = new URLSearchParams(window.location.search);
+        const selectedThesis = dashboardData.activeTheses.find((item) => Number(item.id) === Number(query.get('thesis_id')));
+        return { auth, availableTheses: dashboardData.activeTheses, selectedThesis: selectedThesis || null };
+    }
     if (Page === AppointmentShow) return {
         auth,
         appointment: {
@@ -103,6 +120,21 @@ function propsForPage(Page, pathname) {
         },
     };
     if (Page === AppointmentCreate) return { auth, theses: dashboardData.activeTheses };
+    if (Page === AdminCreateUser) return { auth, roles: ['student', 'supervisor', 'admin'] };
+    if (Page === AdminEditUser) {
+        const user = (mockProps.adminUsers || []).find((entry) => entry.id === id) || mockProps.adminUsers[0];
+        return { auth, user, roles: ['student', 'supervisor', 'admin'] };
+    }
+    if (Page === AdminUsers) {
+        const users = mockProps.adminUsers || [];
+        return {
+            auth,
+            users: { data: users, total: users.length, current_page: 1, last_page: 1 },
+            stats: { total: users.length, active: users.filter((user) => user.is_active).length },
+            roles: ['student', 'supervisor', 'admin'],
+            filters: {},
+        };
+    }
     if (Page === ThesisIndex) return { auth, theses: paginate(dashboardData.activeTheses), canCreate: true, canAssignStudents: true, filters: {} };
     if (Page === AssignmentIndex) return { auth, assignments: paginate(dashboardData.pendingAssignments), theses: dashboardData.activeTheses, canCreate: true, filters: {} };
     if (Page === ProgressIndex) return { auth, thesis: null, milestones: [], supervisedTheses: dashboardData.activeTheses, filters: {} };

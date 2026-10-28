@@ -1,6 +1,11 @@
 export const mockProps = {
     auth: { user: { id: 7, name: 'Ján Kráľ', email: 'jan.kral@example.com', role: 'supervisor' } },
     navCounts: { assignments: 4, messages: 2, appointments: 3 },
+    adminUsers: [
+        { id: 1, name: 'Mária Nováková', email: 'maria.novakova@example.com', role: 'student', is_active: true, created_at: '2026-01-15T10:00:00Z' },
+        { id: 2, name: 'Tomáš Kováč', email: 'tomas.kovac@example.com', role: 'student', is_active: true, created_at: '2026-01-20T10:00:00Z' },
+        { id: 3, name: 'Ján Kráľ', email: 'jan.kral@example.com', role: 'supervisor', is_active: true, created_at: '2026-01-01T10:00:00Z' },
+    ],
     navPreviews: {
         assignments: [{ id: 1, title: 'Metodika výskumu', subtitle: 'Mária Nováková' }],
         messages: [{ id: 2, title: 'Návrh práce', subtitle: 'Tomáš Kováč' }],
